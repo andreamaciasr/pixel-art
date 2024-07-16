@@ -1,7 +1,7 @@
 import "./Canvas.css";
 import { useState } from "react";
-import Pixel from "../Pixel/Pixel";
 import { TwitterPicker } from "react-color";
+import Row from "../Row/Row";
 
 export default function Canvas() {
   const [selectedColor, setSelectedColor] = useState("white");
@@ -16,15 +16,7 @@ export default function Canvas() {
         color={selectedColor}
         onChangeComplete={handleChangeComplete}
       />
-      <Pixel color={selectedColor} />
-      <Pixel color={selectedColor} />
-      <Pixel color={selectedColor} />
-      <Pixel color={selectedColor} />
-      <Pixel color={selectedColor} />
-      <Pixel color={selectedColor} />
-      <Pixel color={selectedColor} />
-      <Pixel color={selectedColor} />
-      <Pixel color={selectedColor} />
+      <Row width={8} color={selectedColor} />
     </>
   );
 }
