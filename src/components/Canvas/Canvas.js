@@ -8,7 +8,6 @@ export default function Canvas() {
 
   function handleChangeComplete(color) {
     setSelectedColor(color.hex);
-    console.log(selectedColor);
   }
 
   return (
@@ -20,8 +19,12 @@ export default function Canvas() {
       <Pixel color={selectedColor} />
       <Pixel color={selectedColor} />
       <Pixel color={selectedColor} />
-
-      {/* <Pixel color={selectedColor} onChangeComplete={handleChangeComplete} /> */}
+      <Pixel color={selectedColor} />
+      <Pixel color={selectedColor} />
+      <Pixel color={selectedColor} />
+      <Pixel color={selectedColor} />
+      <Pixel color={selectedColor} />
+      <Pixel color={selectedColor} />
     </>
   );
 }

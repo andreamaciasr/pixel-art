@@ -3,21 +3,18 @@ import "./Pixel.css";
 
 export default function Pixel({ color }) {
   const [pixelColor, setPixelColor] = useState(color);
-
-  //   useEffect(() => {
-  //     setPixelColor(color);
-  //   }, [color]);
+  const [previousColor, setPreviousColor] = useState(color);
 
   function handleMouseHover() {
-    setPixelColor(pixelColor);
+    setPixelColor(color);
   }
 
   function handleMouseLeave() {
-    setPixelColor(pixelColor);
+    setPixelColor(previousColor);
   }
 
   function handleMouseClick() {
-    console.log(color, pixelColor);
+    setPreviousColor(color);
     setPixelColor(color);
   }
 
