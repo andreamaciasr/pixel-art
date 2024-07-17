@@ -1,11 +1,11 @@
 import logo from "./logo.svg";
 import "./App.css";
-import Canvas from "./components/Canvas/Canvas";
+import Dimensions from "./components/Dimensions/Dimensions";
 
 function App() {
   return (
     <div className="App">
-      <Canvas />
+      <Dimensions />
     </div>
   );
 }

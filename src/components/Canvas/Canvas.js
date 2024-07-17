@@ -3,8 +3,8 @@ import { useState } from "react";
 import { TwitterPicker } from "react-color";
 import Row from "../Row/Row";
 
-export default function Canvas() {
-  const [selectedColor, setSelectedColor] = useState("white");
+export default function Canvas({ width, height }) {
+  const [selectedColor, setSelectedColor] = useState("yellow");
 
   function handleChangeComplete(color) {
     setSelectedColor(color.hex);
@@ -16,7 +16,10 @@ export default function Canvas() {
         color={selectedColor}
         onChangeComplete={handleChangeComplete}
       />
-      <Row width={8} color={selectedColor} />
+      {Array.from({ length: width }).map((_, i) => (
+        <Row color={selectedColor} height={height} />
+      ))}
+      {/* <Row height={height} color={selectedColor} /> */}
     </>
   );
 }
