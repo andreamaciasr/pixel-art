@@ -24,6 +24,7 @@ export default function Pixel({ color }) {
       onMouseEnter={handleMouseHover}
       onMouseLeave={handleMouseLeave}
       //   onMouseDown={handleMouseClick}
+      onMouseOver={handleMouseHover}
       onClick={handleMouseClick}
       style={{ backgroundColor: pixelColor }}
     ></div>

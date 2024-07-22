@@ -1,4 +1,18 @@
 .row {
   display: flex;
   width: fit-content;
+  border-top: 3px solid rgb(255, 136, 0);
+}
+
+.row:nth-child(1n) {
+  border-left: 3px solid rgb(255, 136, 0);
+  border-right: 3px solid rgb(255, 136, 0);
+}
+
+.row:nth-child(2n) ~ .row {
+  border-top: none;
+}
+
+.row:last-child {
+  border-bottom: 3px solid rgb(255, 136, 0);
 }
