@@ -1,9 +1,9 @@
-import "./RestartButton";
+import "./RestartButton.css";
 
-export default function RestartButton() {
+export default function RestartButton({ restartCanvas }) {
   return (
     <div>
-      <buttton>Restart</buttton>
+      <button onClick={restartCanvas}> Restart</button>
     </div>
   );
 }

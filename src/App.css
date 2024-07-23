@@ -14,4 +14,10 @@ body {
   align-items: center;
   text-align: center;
   min-width: fit-content;
+  padding: 6vmin;
+}
+
+.color-wheel {
+  margin: 2vmin;
+  padding: 1vmin;
 }
