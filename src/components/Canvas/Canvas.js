@@ -38,23 +38,17 @@ export default function Canvas({ height, width }) {
         color={selectedColor}
         onChangeComplete={handleChangeComplete}
       />
-      <RestartButton
-        color={selectedColor}
-        width={width}
-        height={height}
-        restart={restart}
-        reset={reset}
-        resetComplete={resetComplete}
-      />
+      <RestartButton restart={restart} />
 
-      {/* {Array.from({ length: height }).map((_, i) => (
+      {Array.from({ length: height }).map((_, i) => (
         <Row
           color={selectedColor}
           width={width}
           key={i}
-          // restartCanvas={restartCanvas}
+          reset={reset}
+          resetComplete={resetComplete}
         />
-      ))} */}
+      ))}
     </>
   );
 }
