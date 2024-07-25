@@ -1,7 +1,6 @@
 import "./Dimensions.css";
 import { useState } from "react";
 import Canvas from "../Canvas/Canvas";
-// import RestartButton from "../RestartButton/RestartButton";
 
 export default function Dimensions() {
   const [height, setHeight] = useState(24);
@@ -14,11 +13,6 @@ export default function Dimensions() {
   function handleWidth(e) {
     setWidth(e.target.value);
   }
-
-  // function reset() {
-  //   setHeight(24);
-  //   setWidth(24);
-  // }
 
   return (
     <>

@@ -9,14 +9,6 @@ export default function Canvas({ height, width }) {
 
   const [reset, setReset] = useState(false);
   const [selectedColor, setSelectedColor] = useState("white");
-  const [initialPixels, setInitialPixels] = useState(initialCanvas);
-
-  // function handleResetButton() {
-  //   // setReset(!reset);
-  //   console.log(reset);
-  //   setSelectedColor("white");
-  //   console.log(selectedColor);
-  // }
 
   function handleChangeComplete(color) {
     setSelectedColor(color.hex);

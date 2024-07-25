@@ -9,6 +9,7 @@ export default function Pixel({ color, reset, resetComplete }) {
   useEffect(() => {
     if (reset) {
       setPixelColor("white");
+      handleRestart();
       resetComplete();
     }
   }, [reset, resetComplete]);
@@ -27,7 +28,8 @@ export default function Pixel({ color, reset, resetComplete }) {
   }
 
   function handleRestart() {
-    setPixelColor("white");
+    // setPixelColor("white");
+    setPreviousColor("white");
   }
 
   return (
