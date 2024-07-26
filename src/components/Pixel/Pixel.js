@@ -2,9 +2,16 @@ import { useState, useEffect } from "react";
 import "./Pixel.css";
 import RestartButton from "../RestartButton/RestartButton";
 
-export default function Pixel({ color, reset, resetComplete }) {
+export default function Pixel({
+  color,
+  reset,
+  resetComplete,
+  background,
+  handleSetBackgroundComplete,
+}) {
   const [pixelColor, setPixelColor] = useState(color);
   const [previousColor, setPreviousColor] = useState(color);
+  // const [background, setBackground] = useState("white");
 
   useEffect(() => {
     if (reset) {
@@ -13,6 +20,16 @@ export default function Pixel({ color, reset, resetComplete }) {
       resetComplete();
     }
   }, [reset, resetComplete]);
+
+  useEffect(() => {
+    if (background) {
+      if (pixelColor === "white") {
+        setPreviousColor(color);
+        setPixelColor(color);
+        handleSetBackgroundComplete();
+      }
+    }
+  }, [background, handleSetBackgroundComplete]);
 
   function handleMouseHover() {
     setPixelColor(color);
@@ -28,7 +45,6 @@ export default function Pixel({ color, reset, resetComplete }) {
   }
 
   function handleRestart() {
-    // setPixelColor("white");
     setPreviousColor("white");
   }
 

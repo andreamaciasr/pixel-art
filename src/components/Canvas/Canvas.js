@@ -3,15 +3,23 @@ import { useState, useEffect } from "react";
 import { TwitterPicker } from "react-color";
 import Row from "../Row/Row";
 import RestartButton from "../RestartButton/RestartButton";
+import BackgroundColorButton from "../BackgroundColorButton/BackgroundColor";
 
 export default function Canvas({ height, width }) {
-  let initialCanvas = Array.from({ length: height }, () => "white");
-
   const [reset, setReset] = useState(false);
   const [selectedColor, setSelectedColor] = useState("white");
+  const [background, setBackground] = useState(false);
 
   function handleChangeComplete(color) {
     setSelectedColor(color.hex);
+  }
+
+  function handleSetBackground() {
+    setBackground(true);
+  }
+
+  function handleSetBackgroundComplete() {
+    setBackground(false);
   }
 
   function restart() {
@@ -31,6 +39,10 @@ export default function Canvas({ height, width }) {
         onChangeComplete={handleChangeComplete}
       />
       <RestartButton restart={restart} />
+      <BackgroundColorButton
+        color={selectedColor}
+        handleSetBackground={handleSetBackground}
+      />
 
       {Array.from({ length: height }).map((_, i) => (
         <Row
@@ -39,6 +51,8 @@ export default function Canvas({ height, width }) {
           key={i}
           reset={reset}
           resetComplete={resetComplete}
+          background={background}
+          handleSetBackgroundComplete={handleSetBackgroundComplete}
         />
       ))}
     </>
