@@ -10,7 +10,7 @@ export default function Pixel({
   handleSetBackgroundComplete,
 }) {
   const [pixelColor, setPixelColor] = useState(color);
-  const [previousColor, setPreviousColor] = useState(color);
+  const [previousColor, setPreviousColor] = useState("white");
   const [currentBackground, setCurrentBackground] = useState("white");
 
   useEffect(() => {
@@ -18,6 +18,8 @@ export default function Pixel({
       setPixelColor("white");
       handleRestart();
       resetComplete();
+      setCurrentBackground("white");
+      setPreviousColor("white");
     }
   }, [reset, resetComplete]);
 

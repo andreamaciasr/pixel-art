@@ -24,7 +24,6 @@ export default function Canvas({ height, width }) {
 
   function restart() {
     setReset(true);
-    setSelectedColor("white");
   }
 
   function resetComplete() {
