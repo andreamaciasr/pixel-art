@@ -54,7 +54,7 @@ export default function Pixel({
   return (
     <div
       className="pixel"
-      onMouseEnter={handleMouseHover}
+      // onMouseEnter={handleMouseHover}
       onMouseLeave={handleMouseLeave}
       onMouseOver={handleMouseHover}
       onClick={handleMouseClick}

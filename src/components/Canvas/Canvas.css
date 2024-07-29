@@ -1,5 +1,13 @@
-.Canvas {
+.main-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+}
+
+.canvas-rows {
+  padding-top: 6vmin;
+  /* padding-right: 24vmin; */
+}
+
+.options-container {
+  padding-top: 6vmin;
+  padding-right: 2vmin;
 }

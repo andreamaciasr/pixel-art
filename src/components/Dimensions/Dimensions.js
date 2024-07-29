@@ -16,20 +16,19 @@ export default function Dimensions() {
 
   return (
     <>
-      <label>
-        enter width:
-        <input type="text" value={width} onChange={handleWidth} />
-      </label>
-
-      <label>
-        enter height:
-        <input type="text" value={height} onChange={handleHeight} />
-      </label>
-
-      <Canvas width={width} height={height} />
-      {/* <div className="container">
-        <RestartButton className="button" reset={reset} />
-      </div> */}
+      <div className="dimensions">
+        <label>
+          width:
+          <input type="text" value={width} onChange={handleWidth} />
+        </label>
+        <label>
+          height:
+          <input type="text" value={height} onChange={handleHeight} />
+        </label>
+      </div>
+      <div className="canvas">
+        <Canvas width={width} height={height} />
+      </div>
     </>
   );
 }

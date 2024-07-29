@@ -1,6 +1,6 @@
 import "./Canvas.css";
 import { useState, useEffect } from "react";
-import { TwitterPicker } from "react-color";
+import { SketchPicker } from "react-color";
 import Row from "../Row/Row";
 import RestartButton from "../RestartButton/RestartButton";
 import BackgroundColorButton from "../BackgroundColorButton/BackgroundColor";
@@ -32,28 +32,38 @@ export default function Canvas({ height, width }) {
 
   return (
     <>
-      <TwitterPicker
-        className="color-wheel"
-        color={selectedColor}
-        onChangeComplete={handleChangeComplete}
-      />
-      <RestartButton restart={restart} />
-      <BackgroundColorButton
-        color={selectedColor}
-        handleSetBackground={handleSetBackground}
-      />
-
-      {Array.from({ length: height }).map((_, i) => (
-        <Row
-          color={selectedColor}
-          width={width}
-          key={i}
-          reset={reset}
-          resetComplete={resetComplete}
-          background={background}
-          handleSetBackgroundComplete={handleSetBackgroundComplete}
-        />
-      ))}
+      <div className="main-container">
+        <div className="options-container">
+          <div className="color-picker-container">
+            <SketchPicker
+              className="color-wheel"
+              color={selectedColor}
+              onChangeComplete={handleChangeComplete}
+            />
+          </div>
+          <div classname="buttons-container">
+            <RestartButton restart={restart} />
+            <BackgroundColorButton
+              className="button"
+              color={selectedColor}
+              handleSetBackground={handleSetBackground}
+            />
+          </div>
+        </div>
+        <div className="canvas-rows">
+          {Array.from({ length: height }).map((_, i) => (
+            <Row
+              color={selectedColor}
+              width={width}
+              key={i}
+              reset={reset}
+              resetComplete={resetComplete}
+              background={background}
+              handleSetBackgroundComplete={handleSetBackgroundComplete}
+            />
+          ))}
+        </div>
+      </div>
     </>
   );
 }
