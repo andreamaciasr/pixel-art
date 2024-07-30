@@ -11,3 +11,12 @@
   padding-top: 6vmin;
   padding-right: 2vmin;
 }
+
+button {
+  font-family: "Roboto", sans-serif;
+  margin-bottom: 1vmin;
+  padding: 0.7vmin;
+  border-color: orange;
+  background-color: rgb(255, 225, 58);
+  border-width: 0.4vmin;
+}

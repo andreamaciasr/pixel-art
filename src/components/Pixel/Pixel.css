@@ -7,11 +7,3 @@
 .pixel:hover {
   cursor: pointer;
 }
-
-/* .pixel:nth-child(1n) {
-  border-top: 3px solid rgb(255, 136, 0);
-} */
-
-/* .pixel:nth-child(12) ~ .pixel {
-  border-left: 3px solid rgb(255, 136, 0);
-} */
