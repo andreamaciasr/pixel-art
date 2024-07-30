@@ -6,7 +6,7 @@ export default function Row({
   color,
   reset,
   resetComplete,
-
+  isMouseDown,
   background,
   handleSetBackgroundComplete,
 }) {
@@ -14,6 +14,7 @@ export default function Row({
     <div className="row">
       {Array.from({ length: width }).map((_, i) => (
         <Pixel
+          isMouseDown={isMouseDown}
           color={color}
           key={i}
           reset={reset}

@@ -8,10 +8,12 @@ export default function Pixel({
   resetComplete,
   background,
   handleSetBackgroundComplete,
+  isMouseDown,
 }) {
   const [pixelColor, setPixelColor] = useState(color);
   const [previousColor, setPreviousColor] = useState("white");
   const [currentBackground, setCurrentBackground] = useState("white");
+  // const [isMouseDown, setIsMouseDown] = useState(false);
 
   useEffect(() => {
     if (reset) {
@@ -34,8 +36,16 @@ export default function Pixel({
     }
   }, [background, handleSetBackgroundComplete]);
 
+  function handleMouseDown() {
+    handleMouseClick();
+  }
+
   function handleMouseHover() {
-    setPixelColor(color);
+    if (isMouseDown) {
+      handleMouseClick();
+    } else {
+      setPixelColor(color);
+    }
   }
 
   function handleMouseLeave() {
@@ -57,7 +67,9 @@ export default function Pixel({
       // onMouseEnter={handleMouseHover}
       onMouseLeave={handleMouseLeave}
       onMouseOver={handleMouseHover}
-      onClick={handleMouseClick}
+      // onClick={handleMouseClick}
+      onMouseDown={handleMouseDown}
+      // style={pixelStyle}
       style={{ backgroundColor: pixelColor }}
     ></div>
   );

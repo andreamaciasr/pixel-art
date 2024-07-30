@@ -3,5 +3,6 @@
   justify-content: center;
 }
 
-/* .canvas {
-} */
+label {
+  padding-left: 3vmin;
+}

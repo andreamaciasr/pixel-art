@@ -1,6 +1,6 @@
 import "./Canvas.css";
 import { useState, useEffect } from "react";
-import { SketchPicker } from "react-color";
+import { SwatchesPicker } from "react-color";
 import Row from "../Row/Row";
 import RestartButton from "../RestartButton/RestartButton";
 import BackgroundColorButton from "../BackgroundColorButton/BackgroundColor";
@@ -9,6 +9,15 @@ export default function Canvas({ height, width }) {
   const [reset, setReset] = useState(false);
   const [selectedColor, setSelectedColor] = useState("white");
   const [background, setBackground] = useState(false);
+  const [isMouseDown, setIsMouseDown] = useState(false);
+
+  function handleMouseDown() {
+    setIsMouseDown(true);
+  }
+
+  function handleMouseUp() {
+    setIsMouseDown(false);
+  }
 
   function handleChangeComplete(color) {
     setSelectedColor(color.hex);
@@ -31,11 +40,15 @@ export default function Canvas({ height, width }) {
   }
 
   return (
-    <>
+    <div
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+    >
       <div className="main-container">
         <div className="options-container">
           <div className="color-picker-container">
-            <SketchPicker
+            <SwatchesPicker
               className="color-wheel"
               color={selectedColor}
               onChangeComplete={handleChangeComplete}
@@ -53,6 +66,7 @@ export default function Canvas({ height, width }) {
         <div className="canvas-rows">
           {Array.from({ length: height }).map((_, i) => (
             <Row
+              isMouseDown={isMouseDown}
               color={selectedColor}
               width={width}
               key={i}
@@ -64,6 +78,6 @@ export default function Canvas({ height, width }) {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

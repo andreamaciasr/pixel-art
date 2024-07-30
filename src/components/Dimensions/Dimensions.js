@@ -18,11 +18,11 @@ export default function Dimensions() {
     <>
       <div className="dimensions">
         <label>
-          width:
+          width:&nbsp;&nbsp;
           <input type="text" value={width} onChange={handleWidth} />
         </label>
         <label>
-          height:
+          height:&nbsp;&nbsp;
           <input type="text" value={height} onChange={handleHeight} />
         </label>
       </div>
