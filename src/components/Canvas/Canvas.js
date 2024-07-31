@@ -1,15 +1,19 @@
 import "./Canvas.css";
-import { useState, useEffect } from "react";
+import { exportComponentAsPNG } from "react-component-export-image";
+import { useState, useRef } from "react";
 import { SwatchesPicker } from "react-color";
 import Row from "../Row/Row";
 import RestartButton from "../RestartButton/RestartButton";
 import BackgroundColorButton from "../BackgroundColorButton/BackgroundColor";
+import ExportButton from "../ExportButton/ExportButton";
 
 export default function Canvas({ height, width }) {
   const [reset, setReset] = useState(false);
   const [selectedColor, setSelectedColor] = useState("white");
   const [background, setBackground] = useState(false);
   const [isMouseDown, setIsMouseDown] = useState(false);
+
+  const canvasRef = useRef();
 
   function handleMouseDown() {
     setIsMouseDown(true);
@@ -61,9 +65,10 @@ export default function Canvas({ height, width }) {
               color={selectedColor}
               handleSetBackground={handleSetBackground}
             />
+            <ExportButton canvasRef={canvasRef} />
           </div>
         </div>
-        <div className="canvas-rows">
+        <div className="canvas-rows" ref={canvasRef}>
           {Array.from({ length: height }).map((_, i) => (
             <Row
               isMouseDown={isMouseDown}
