@@ -6,6 +6,7 @@ import Row from "../Row/Row";
 import RestartButton from "../RestartButton/RestartButton";
 import BackgroundColorButton from "../BackgroundColorButton/BackgroundColor";
 import ExportButton from "../ExportButton/ExportButton";
+import Panel from "../Panel/Panel";
 
 export default function Canvas({ height, width }) {
   const [reset, setReset] = useState(false);
@@ -69,18 +70,16 @@ export default function Canvas({ height, width }) {
           </div>
         </div>
         <div className="canvas-rows" ref={canvasRef}>
-          {Array.from({ length: height }).map((_, i) => (
-            <Row
-              isMouseDown={isMouseDown}
-              color={selectedColor}
-              width={width}
-              key={i}
-              reset={reset}
-              resetComplete={resetComplete}
-              background={background}
-              handleSetBackgroundComplete={handleSetBackgroundComplete}
-            />
-          ))}
+          <Panel
+            height={height}
+            isMouseDown={isMouseDown}
+            color={selectedColor}
+            width={width}
+            reset={reset}
+            resetComplete={resetComplete}
+            background={background}
+            handleSetBackgroundComplete={handleSetBackgroundComplete}
+          />
         </div>
       </div>
     </div>
