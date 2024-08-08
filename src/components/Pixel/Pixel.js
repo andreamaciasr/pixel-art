@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./Pixel.css";
-import RestartButton from "../RestartButton/RestartButton";
 
 export default function Pixel({
   color,
@@ -10,10 +9,9 @@ export default function Pixel({
   handleSetBackgroundComplete,
   isMouseDown,
 }) {
-  const [pixelColor, setPixelColor] = useState(color);
+  const [pixelColor, setPixelColor] = useState("white"); //color intead of white
   const [previousColor, setPreviousColor] = useState("white");
   const [currentBackground, setCurrentBackground] = useState("white");
-  // const [isMouseDown, setIsMouseDown] = useState(false);
 
   useEffect(() => {
     if (reset) {
@@ -55,6 +53,7 @@ export default function Pixel({
   function handleMouseClick() {
     setPreviousColor(color);
     setPixelColor(color);
+    console.log();
   }
 
   function handleRestart() {
@@ -64,12 +63,9 @@ export default function Pixel({
   return (
     <div
       className="pixel"
-      // onMouseEnter={handleMouseHover}
       onMouseLeave={handleMouseLeave}
       onMouseOver={handleMouseHover}
-      // onClick={handleMouseClick}
       onMouseDown={handleMouseDown}
-      // style={pixelStyle}
       style={{ backgroundColor: pixelColor }}
     ></div>
   );

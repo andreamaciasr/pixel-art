@@ -2,7 +2,6 @@ import "./Canvas.css";
 import { exportComponentAsPNG } from "react-component-export-image";
 import { useState, useRef } from "react";
 import { SwatchesPicker } from "react-color";
-import Row from "../Row/Row";
 import RestartButton from "../RestartButton/RestartButton";
 import BackgroundColorButton from "../BackgroundColorButton/BackgroundColor";
 import ExportButton from "../ExportButton/ExportButton";
