@@ -28,6 +28,7 @@ export default function Dimensions() {
       </div>
       <div className="canvas">
         <Canvas width={width} height={height} />
+        <Canvas width={8} height={8} />
       </div>
     </>
   );
