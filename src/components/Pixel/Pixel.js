@@ -8,6 +8,13 @@ export default function Pixel({
   background,
   handleSetBackgroundComplete,
   isMouseDown,
+  changedPixels,
+  rowID,
+  pixelID,
+  handleUndoComplete,
+  undo,
+  changedPixelsState,
+  setChangedPixelsState,
 }) {
   const [pixelColor, setPixelColor] = useState("white"); //color intead of white
   const [previousColor, setPreviousColor] = useState("white");
@@ -34,6 +41,13 @@ export default function Pixel({
     }
   }, [background, handleSetBackgroundComplete]);
 
+  useEffect(() => {
+    if (undo) {
+      console.log(changedPixels.current);
+      handleUndoComplete();
+    }
+  }, [undo, handleUndoComplete]);
+
   function handleMouseDown() {
     handleMouseClick();
   }
@@ -51,9 +65,15 @@ export default function Pixel({
   }
 
   function handleMouseClick() {
+    changedPixels.current.push({
+      prevColor: previousColor,
+      rowID: rowID,
+      pixelID: pixelID,
+    });
+    console.log(changedPixels.current);
+    setChangedPixelsState([...changedPixels.current]);
     setPreviousColor(color);
     setPixelColor(color);
-    console.log();
   }
 
   function handleRestart() {

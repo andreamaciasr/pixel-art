@@ -9,6 +9,12 @@ export default function Row({
   isMouseDown,
   background,
   handleSetBackgroundComplete,
+  changedPixels,
+  rowID,
+  handleUndoComplete,
+  undo,
+  changedPixelsState,
+  setChangedPixelsState,
 }) {
   return (
     <div className="row">
@@ -21,6 +27,13 @@ export default function Row({
           resetComplete={resetComplete}
           background={background}
           handleSetBackgroundComplete={handleSetBackgroundComplete}
+          changedPixels={changedPixels}
+          rowID={rowID}
+          pixelID={i}
+          handleUndoComplete={handleUndoComplete}
+          undo={undo}
+          changedPixelsState={changedPixelsState}
+          setChangedPixelsState={setChangedPixelsState}
         />
       ))}
     </div>

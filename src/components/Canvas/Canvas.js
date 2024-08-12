@@ -1,19 +1,39 @@
 import "./Canvas.css";
 import { exportComponentAsPNG } from "react-component-export-image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { SwatchesPicker } from "react-color";
 import RestartButton from "../RestartButton/RestartButton";
 import BackgroundColorButton from "../BackgroundColorButton/BackgroundColor";
 import ExportButton from "../ExportButton/ExportButton";
 import Panel from "../Panel/Panel";
+import UndoButton from "../UndoButton/UndoButton";
 
 export default function Canvas({ height, width }) {
   const [reset, setReset] = useState(false);
   const [selectedColor, setSelectedColor] = useState("white");
   const [background, setBackground] = useState(false);
   const [isMouseDown, setIsMouseDown] = useState(false);
+  const [undo, setUndo] = useState(false);
+  const [changedPixelsState, setChangedPixelsState] = useState([]);
 
   const canvasRef = useRef();
+  const changedPixelsRef = useRef([]);
+
+  // useEffect(() => {
+  //   if (undo) {
+  //     // Once undo is triggered, reset undo state
+  //     setUndo(false);
+  //   }
+  // }, [undo]);
+
+  function handleUndo() {
+    setUndo(true);
+    console.log(undo);
+  }
+
+  function handleUndoComplete() {
+    setUndo(false);
+  }
 
   function handleMouseDown() {
     setIsMouseDown(true);
@@ -21,6 +41,7 @@ export default function Canvas({ height, width }) {
 
   function handleMouseUp() {
     setIsMouseDown(false);
+    changedPixelsRef.current = [];
   }
 
   function handleChangeComplete(color) {
@@ -66,6 +87,7 @@ export default function Canvas({ height, width }) {
               handleSetBackground={handleSetBackground}
             />
             <ExportButton canvasRef={canvasRef} />
+            <UndoButton handleUndo={handleUndo} />
           </div>
         </div>
         <div className="canvas-rows" ref={canvasRef}>
@@ -78,6 +100,11 @@ export default function Canvas({ height, width }) {
             resetComplete={resetComplete}
             background={background}
             handleSetBackgroundComplete={handleSetBackgroundComplete}
+            changedPixels={changedPixelsRef}
+            handleUndoComplete={handleUndoComplete}
+            undo={undo}
+            changedPixelsState={changedPixelsState}
+            setChangedPixelsState={setChangedPixelsState}
           />
         </div>
       </div>
