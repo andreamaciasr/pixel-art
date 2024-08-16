@@ -10,10 +10,7 @@ export default function CanvasContainer() {
 
   return (
     <div>
-      <button onClick={duplicateCanvas}>Duplicate Canvas</button>
-      {canvasList.map((_, index) => (
-        <Canvas key={index} height={10} width={10} /> // Adjust height and width as needed
-      ))}
+      <Canvas />
     </div>
   );
 }
