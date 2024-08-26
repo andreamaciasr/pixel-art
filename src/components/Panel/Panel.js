@@ -9,6 +9,11 @@ export default function Panel({
   background,
   handleSetBackgroundComplete,
   height,
+  changedPixels,
+  handleUndoComplete,
+  undo,
+  changedPixelsState,
+  setChangedPixelsState,
 }) {
   return (
     <div>
@@ -22,6 +27,12 @@ export default function Panel({
           resetComplete={resetComplete}
           background={background}
           handleSetBackgroundComplete={handleSetBackgroundComplete}
+          changedPixels={changedPixels}
+          rowID={i}
+          handleUndoComplete={handleUndoComplete}
+          undo={undo}
+          changedPixelsState={changedPixelsState}
+          setChangedPixelsState={setChangedPixelsState}
         />
       ))}
     </div>

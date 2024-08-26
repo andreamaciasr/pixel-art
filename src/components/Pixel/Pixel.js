@@ -8,20 +8,36 @@ export default function Pixel({
   background,
   handleSetBackgroundComplete,
   isMouseDown,
+  handleCanvasUpdate,
+  canvasState,
+  changedPixels,
+  rowId,
+  pixelId,
+  handleUndoComplete,
+  undo,
 }) {
-  const [pixelColor, setPixelColor] = useState("white"); //color intead of white
+  const [pixelColor, setPixelColor] = useState(color); //color intead of white
   const [previousColor, setPreviousColor] = useState("white");
   const [currentBackground, setCurrentBackground] = useState("white");
 
   useEffect(() => {
     if (reset) {
-      setPixelColor("white");
-      handleRestart();
+      restart();
       resetComplete();
       setCurrentBackground("white");
       setPreviousColor("white");
     }
   }, [reset, resetComplete]);
+
+  // useEffect(() => {
+  //   if (reset) {
+  //     setPixelColor("white");
+  //     handleRestart();
+  //     resetComplete();
+  //     setCurrentBackground("white");
+  //     setPreviousColor("white");
+  //   }
+  // }, [reset, resetComplete]);
 
   useEffect(() => {
     if (background) {
@@ -34,39 +50,83 @@ export default function Pixel({
     }
   }, [background, handleSetBackgroundComplete]);
 
-  function handleMouseDown() {
-    handleMouseClick();
-  }
+  // function handleMouseDown() {
+  //   handleClick();
+  // }
 
   function handleMouseHover() {
+    // console.log("MouseHover: isMouseDown =", isMouseDown);
     if (isMouseDown) {
-      handleMouseClick();
+      handleClick();
     } else {
-      setPixelColor(color);
+      // console.log("MouseHover: Updating color to", color);
+      updateColors(color);
     }
   }
 
   function handleMouseLeave() {
-    setPixelColor(previousColor);
+    console.log("MouseLeave: Reverting to", previousColor);
+    updateColors(previousColor);
   }
 
-  function handleMouseClick() {
+  // function handleMouseLeave() {
+  //   // setPixelColor(previousColor);
+  //   updateColors(previousColor);
+  //   console.log(previousColor);
+  // }
+
+  // function handleMouseClick() {
+  //   setPreviousColor(color);
+  //   setPixelColor(color);
+  // }
+
+  function handleClick() {
     setPreviousColor(color);
-    setPixelColor(color);
-    console.log();
+    updateColors(color);
   }
 
-  function handleRestart() {
+  // function updateColors(color) {
+  //   const updatedCanvas = canvasState.map((row, rIndex) =>
+  //     rIndex === rowId
+  //       ? row.map((pixel, pIndex) => (pIndex === pixelId ? color : pixel))
+  //       : row
+  //   );
+  //   handleCanvasUpdate(updatedCanvas);
+  //   console.log(canvasState);
+  // }
+
+  function updateColors(color) {
+    console.log("Canvas state before update:", canvasState);
+    const updatedCanvas = canvasState.map((row, rIndex) => {
+      // console.log(`Updating row ${rIndex}, target rowId is ${rowId}`);
+      return rIndex === rowId
+        ? row.map((pixel, pIndex) => {
+            // console.log(
+            //   `Updating pixel ${pIndex} in row ${rIndex}, target pixelId is ${pixelId}`
+            // );
+            return pIndex === pixelId ? color : pixel;
+          })
+        : row;
+    });
+
+    handleCanvasUpdate(updatedCanvas);
+    console.log("Updated canvas state:", updatedCanvas);
+  }
+
+  function restart() {
+    const updatedCanvas = canvasState.map((row) => row.map(() => "white"));
+    handleCanvasUpdate(updatedCanvas);
     setPreviousColor("white");
   }
 
   return (
     <div
       className="pixel"
+      onClick={handleClick}
       onMouseLeave={handleMouseLeave}
-      onMouseOver={handleMouseHover}
-      onMouseDown={handleMouseDown}
-      style={{ backgroundColor: pixelColor }}
+      onMouseEnter={handleMouseHover}
+      // onMouseDown={handleMouseDown}
+      style={{ backgroundColor: canvasState[rowId][pixelId] }}
     ></div>
   );
 }
