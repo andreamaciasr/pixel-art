@@ -9,18 +9,31 @@ import Panel from "../Panel/Panel";
 import UndoButton from "../UndoButton/UndoButton";
 import Pixel from "../Pixel/Pixel";
 import Row from "../Row/Row";
+let id = 0;
+
+const NOT_YET_SET_COLOR = "not-yet-set";
+
+function createFreshCanvasState() {
+  return Array(3)
+    .fill()
+    .map(() => Array(3).fill(NOT_YET_SET_COLOR));
+}
 
 export default function Canvas() {
   const [reset, setReset] = useState(false);
-  const [selectedColor, setSelectedColor] = useState("white");
-  const [background, setBackground] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("red");
+  const [background, setBackground] = useState(NOT_YET_SET_COLOR);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [undo, setUndo] = useState(false);
-  const [canvasState, setCanvasState] = useState(
-    Array(3)
-      .fill()
-      .map(() => Array(3).fill("white"))
-  );
+  const [canvasState, setCanvasState] = useState(createFreshCanvasState());
+  const [hoveredPixel, setHoveredPixel] = useState(null);
+
+  function restart() {
+    const updatedCanvas = canvasState.map((row) =>
+      row.map(() => NOT_YET_SET_COLOR),
+    );
+    handleCanvasUpdate(updatedCanvas);
+  }
 
   // function handleCanvasUpdate(canvas) {
   //   setCanvasState(canvas);
@@ -58,20 +71,28 @@ export default function Canvas() {
   }
 
   function handleSetBackground() {
-    // console.log(canvasState);
-    setBackground(true);
-  }
-
-  function handleSetBackgroundComplete() {
-    setBackground(false);
+    setBackground(selectedColor);
   }
 
   function restart() {
-    setReset(true);
+    setCanvasState(createFreshCanvasState());
   }
 
   function resetComplete() {
     setReset(false);
+  }
+
+  function updateColors(color, rowId, pixelId) {
+    console.log("Updating colors", { color, rowId, pixelId });
+    const updatedCanvas = canvasState.map((row, rIndex) => {
+      return rIndex === rowId
+        ? row.map((pixel, pIndex) => {
+            return pIndex === pixelId ? color : pixel;
+          })
+        : row;
+    });
+
+    handleCanvasUpdate(updatedCanvas);
   }
 
   return (
@@ -103,7 +124,7 @@ export default function Canvas() {
         <div className="canvas-rows">
           {canvasState.map((row, rowIdx) => (
             <Row
-              key={rowIdx}
+              key={++id}
               pixels={row.map((color, pixelIdx) => (
                 <Pixel
                   key={`${rowIdx}-${pixelIdx}`}
@@ -112,13 +133,14 @@ export default function Canvas() {
                   reset={reset}
                   resetComplete={resetComplete}
                   background={background}
-                  handleSetBackgroundComplete={handleSetBackgroundComplete}
                   handleUndoComplete={handleUndoComplete}
                   undo={undo}
-                  handleCanvasUpdate={handleCanvasUpdate}
                   canvasState={canvasState}
                   pixelId={pixelIdx}
                   rowId={rowIdx}
+                  hoveredPixel={hoveredPixel}
+                  setHoveredPixel={setHoveredPixel}
+                  updateColors={updateColors}
                 />
               ))}
             ></Row>
