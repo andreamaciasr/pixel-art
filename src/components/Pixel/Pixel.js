@@ -50,9 +50,9 @@ export default function Pixel({
     }
   }, [background, handleSetBackgroundComplete]);
 
-  function handleMouseDown() {
-    handleClick();
-  }
+  // function handleMouseDown() {
+  //   handleClick();
+  // }
 
   function handleMouseHover() {
     // console.log("MouseHover: isMouseDown =", isMouseDown);
@@ -81,7 +81,6 @@ export default function Pixel({
   // }
 
   function handleClick() {
-    console.log("click or hover, changing to", color);
     setPreviousColor(color);
     updateColors(color);
   }
