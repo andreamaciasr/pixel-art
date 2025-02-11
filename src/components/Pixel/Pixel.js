@@ -3,70 +3,45 @@ import "./Pixel.css";
 
 export default function Pixel({
   color,
-  reset,
-  resetComplete,
-  background,
-  handleSetBackgroundComplete,
   isMouseDown,
+  canvasState,
+  rowId,
+  pixelId,
+  hoveredPixel,
+  setHoveredPixel,
+  updateColors,
+  background,
 }) {
-  const [pixelColor, setPixelColor] = useState("white"); //color intead of white
-  const [previousColor, setPreviousColor] = useState("white");
-  const [currentBackground, setCurrentBackground] = useState("white");
-
-  useEffect(() => {
-    if (reset) {
-      setPixelColor("white");
-      handleRestart();
-      resetComplete();
-      setCurrentBackground("white");
-      setPreviousColor("white");
-    }
-  }, [reset, resetComplete]);
-
-  useEffect(() => {
-    if (background) {
-      if (pixelColor === currentBackground) {
-        setPreviousColor(color);
-        setPixelColor(color);
-        handleSetBackgroundComplete();
-        setCurrentBackground(color);
-      }
-    }
-  }, [background, handleSetBackgroundComplete]);
-
-  function handleMouseDown() {
-    handleMouseClick();
+  function handleClick() {
+    updateColors(color, rowId, pixelId);
   }
 
   function handleMouseHover() {
     if (isMouseDown) {
-      handleMouseClick();
+      console.log("Handled mouse down on hover");
+      updateColors(color, rowId, pixelId);
     } else {
-      setPixelColor(color);
+      setHoveredPixel({ row: rowId, column: pixelId });
     }
   }
 
-  function handleMouseLeave() {
-    setPixelColor(previousColor);
-  }
+  const thisPixelIsTheOneThatsHovered =
+    hoveredPixel?.row === rowId && hoveredPixel?.column === pixelId;
 
-  function handleMouseClick() {
-    setPreviousColor(color);
-    setPixelColor(color);
-    console.log();
-  }
-
-  function handleRestart() {
-    setPreviousColor("white");
-  }
+  const pixelColor =
+    canvasState[rowId][pixelId] === "not-yet-set"
+      ? background
+      : canvasState[rowId][pixelId];
 
   return (
     <div
       className="pixel"
-      onMouseLeave={handleMouseLeave}
-      onMouseOver={handleMouseHover}
-      onMouseDown={handleMouseDown}
-      style={{ backgroundColor: pixelColor }}
+      onClick={handleClick}
+      onMouseEnter={handleMouseHover}
+      // onMouseDown={handleMouseDown}
+      style={{
+        backgroundColor: thisPixelIsTheOneThatsHovered ? color : pixelColor,
+      }}
     ></div>
   );
 }
