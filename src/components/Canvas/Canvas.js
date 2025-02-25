@@ -9,14 +9,15 @@ import Panel from "../Panel/Panel";
 import UndoButton from "../UndoButton/UndoButton";
 import Pixel from "../Pixel/Pixel";
 import Row from "../Row/Row";
+import { use } from "react";
 let id = 0;
 
 const NOT_YET_SET_COLOR = "not-yet-set";
 
 function createFreshCanvasState() {
-  return Array(3)
+  return Array(10)
     .fill()
-    .map(() => Array(3).fill(NOT_YET_SET_COLOR));
+    .map(() => Array(10).fill(NOT_YET_SET_COLOR));
 }
 
 export default function Canvas() {
@@ -28,30 +29,43 @@ export default function Canvas() {
   const [canvasState, setCanvasState] = useState(createFreshCanvasState());
   const [hoveredPixel, setHoveredPixel] = useState(null);
 
+function updateColors(color, rowId, pixelId) {
+  setCanvasState(prevState => {
+    const newState = prevState.map(row => [...row]);
+    newState[rowId][pixelId] = color;
+    return [...newState];
+  });
+}
+
+
+  // function restart() {
+  //   const updatedCanvas = canvasState.map((row) =>
+  //     row.map(() => "white"),
+  //   );
+  //   handleCanvasUpdate(updatedCanvas);
+  // }
+
+
+  useEffect(() => {
+    console.log("Updated canvasState:", canvasState);
+  }, [canvasState]);
+
+  useEffect(() => {
+    setBackground("white");
+  }, []);
+  
+
   function restart() {
-    const updatedCanvas = canvasState.map((row) =>
-      row.map(() => NOT_YET_SET_COLOR),
-    );
+    const updatedCanvas = createFreshCanvasState();
     handleCanvasUpdate(updatedCanvas);
   }
 
-  // function handleCanvasUpdate(canvas) {
-  //   setCanvasState(canvas);
-  // }
-
   function handleCanvasUpdate(newCanvas) {
-    setCanvasState((prevState) => {
-      // `prevState` is the current state value
-      // console.log("Previous state:", prevState);
-
-      // Return the updated state
-      return newCanvas;
-    });
+    setCanvasState(newCanvas);
   }
 
   function handleUndo() {
     setUndo(true);
-    // console.log(undo);
   }
 
   function handleUndoComplete() {
@@ -71,7 +85,9 @@ export default function Canvas() {
   }
 
   function handleSetBackground() {
+    console.log("Previous canvas state:", canvasState);
     setBackground(selectedColor);
+    console.log("New background color:", selectedColor);
   }
 
   function restart() {
@@ -82,24 +98,15 @@ export default function Canvas() {
     setReset(false);
   }
 
-  function updateColors(color, rowId, pixelId) {
-    console.log("Updating colors", { color, rowId, pixelId });
-    const updatedCanvas = canvasState.map((row, rIndex) => {
-      return rIndex === rowId
-        ? row.map((pixel, pIndex) => {
-            return pIndex === pixelId ? color : pixel;
-          })
-        : row;
-    });
-
-    handleCanvasUpdate(updatedCanvas);
+  function handleCanvasUpdate(newCanvas) {
+    setCanvasState(newCanvas);
   }
+
 
   return (
     <div
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
     >
       <div className="main-container">
         <div className="options-container">
@@ -124,26 +131,18 @@ export default function Canvas() {
         <div className="canvas-rows">
           {canvasState.map((row, rowIdx) => (
             <Row
-              key={++id}
-              pixels={row.map((color, pixelIdx) => (
-                <Pixel
-                  key={`${rowIdx}-${pixelIdx}`}
-                  isMouseDown={isMouseDown}
-                  color={selectedColor}
-                  reset={reset}
-                  resetComplete={resetComplete}
-                  background={background}
-                  handleUndoComplete={handleUndoComplete}
-                  undo={undo}
-                  canvasState={canvasState}
-                  pixelId={pixelIdx}
-                  rowId={rowIdx}
-                  hoveredPixel={hoveredPixel}
-                  setHoveredPixel={setHoveredPixel}
-                  updateColors={updateColors}
-                />
-              ))}
-            ></Row>
+            key={rowIdx}
+            rowPixels={row} 
+            rowIdx={rowIdx}
+            isMouseDown={isMouseDown}
+            color={selectedColor}
+            background={background}
+            hoveredPixel={hoveredPixel}
+            setHoveredPixel={setHoveredPixel}
+            updateColors={updateColors}
+            canvasState={canvasState}
+            handleMouseDown={handleMouseDown}
+            />
           ))}
         </div>
       </div>

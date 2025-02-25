@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Pixel.css";
+import { use } from "react";
 
 export default function Pixel({
   color,
@@ -12,17 +13,30 @@ export default function Pixel({
   updateColors,
   background,
 }) {
+
+
+  useEffect(() => {
+   // console.log("background change");
+  }, [background, canvasState]);
+
   function handleClick() {
     updateColors(color, rowId, pixelId);
   }
 
   function handleMouseHover() {
     if (isMouseDown) {
-      console.log("Handled mouse down on hover");
       updateColors(color, rowId, pixelId);
     } else {
       setHoveredPixel({ row: rowId, column: pixelId });
     }
+  }
+
+  function handleMouseLeave() {
+    setHoveredPixel(null);
+  }
+
+  function handleMouseDown() {
+    updateColors(color, rowId, pixelId);
   }
 
   const thisPixelIsTheOneThatsHovered =
@@ -32,13 +46,14 @@ export default function Pixel({
     canvasState[rowId][pixelId] === "not-yet-set"
       ? background
       : canvasState[rowId][pixelId];
-
+  
   return (
     <div
       className="pixel"
       onClick={handleClick}
       onMouseEnter={handleMouseHover}
-      // onMouseDown={handleMouseDown}
+      onMouseDown={handleMouseDown}
+      onMouseLeave={handleMouseLeave}
       style={{
         backgroundColor: thisPixelIsTheOneThatsHovered ? color : pixelColor,
       }}
