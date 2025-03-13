@@ -12,20 +12,22 @@ export default function Pixel({
   setHoveredPixel,
   updateColors,
   background,
+  setStrokeLength,
+  strokeLength,
+  handleAddToHistory,
 }) {
 
 
-  useEffect(() => {
-   // console.log("background change");
-  }, [background, canvasState]);
 
   function handleClick() {
     updateColors(color, rowId, pixelId);
+    handleAddToHistory();
   }
 
   function handleMouseHover() {
     if (isMouseDown) {
       updateColors(color, rowId, pixelId);
+      handleAddToHistory();
     } else {
       setHoveredPixel({ row: rowId, column: pixelId });
     }
@@ -36,7 +38,18 @@ export default function Pixel({
   }
 
   function handleMouseDown() {
+  // setStrokeLength(strokeLength + 1);
     updateColors(color, rowId, pixelId);
+    
+  }
+
+  function handleStrokeLength() {
+    let length = 0;
+    while(isMouseDown) {
+      length++;
+    }
+    setStrokeLength(length);
+    console.log(length);
   }
 
   const thisPixelIsTheOneThatsHovered =

@@ -15,58 +15,73 @@ let id = 0;
 const NOT_YET_SET_COLOR = "not-yet-set";
 
 function createFreshCanvasState() {
-  return Array(10)
+  return Array(25)
     .fill()
-    .map(() => Array(10).fill(NOT_YET_SET_COLOR));
+    .map(() => Array(25).fill(NOT_YET_SET_COLOR));
 }
 
 export default function Canvas() {
   const [reset, setReset] = useState(false);
-  const [selectedColor, setSelectedColor] = useState("red");
+  const [selectedColor, setSelectedColor] = useState("pink");
   const [background, setBackground] = useState(NOT_YET_SET_COLOR);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [undo, setUndo] = useState(false);
   const [canvasState, setCanvasState] = useState(createFreshCanvasState());
   const [hoveredPixel, setHoveredPixel] = useState(null);
-
-function updateColors(color, rowId, pixelId) {
-  setCanvasState(prevState => {
-    const newState = prevState.map(row => [...row]);
-    newState[rowId][pixelId] = color;
-    return [...newState];
-  });
-}
-
-
-  // function restart() {
-  //   const updatedCanvas = canvasState.map((row) =>
-  //     row.map(() => "white"),
-  //   );
-  //   handleCanvasUpdate(updatedCanvas);
-  // }
-
-
-  useEffect(() => {
-    console.log("Updated canvasState:", canvasState);
-  }, [canvasState]);
+  const [history, setHistory] = useState([createFreshCanvasState()]);
+  const [deleted, setDeleted] = useState([]);
+  const [strokeLength, setStrokeLength] = useState(0);
 
   useEffect(() => {
     setBackground("white");
+    console.log("history at beginning " + history);
   }, []);
+
+  // useEffect(() => {
+  //   handleHistoryUpdate();
+  //  // console.log("history update colors " + history);
+  // }, [canvasState]);
+
+  function updateColors(color, rowId, pixelId) {
+    setCanvasState((prevState) => {
+      const newState = prevState.map((row) => [...row]);
+      newState[rowId][pixelId] = color;
+      return [...newState];
+    });
+      console.log(canvasState);
+  }
   
+  function handleAddToHistory() {
+    setHistory((prevHistory) => [canvasState, ...prevHistory]);
+  }
+
+  function handleUndo() {
+    if (history.length <= 1) {
+      setCanvasState(createFreshCanvasState());
+      setHistory([createFreshCanvasState()]);
+      return;
+    }
+    setDeleted((prevDeleted) => [...prevDeleted, history[0]]);
+    console.log("history before slice", history);
+    setHistory((prevHistory) => {
+      const newHistory = prevHistory.slice(1);
+      setCanvasState(newHistory[0]);
+      console.log("history after slice", newHistory);
+      return newHistory;
+    });
+  }
 
   function restart() {
     const updatedCanvas = createFreshCanvasState();
     handleCanvasUpdate(updatedCanvas);
+    setHistory([]);
+    setDeleted([]);
   }
 
   function handleCanvasUpdate(newCanvas) {
     setCanvasState(newCanvas);
   }
 
-  function handleUndo() {
-    setUndo(true);
-  }
 
   function handleUndoComplete() {
     setUndo(false);
@@ -85,9 +100,7 @@ function updateColors(color, rowId, pixelId) {
   }
 
   function handleSetBackground() {
-    console.log("Previous canvas state:", canvasState);
     setBackground(selectedColor);
-    console.log("New background color:", selectedColor);
   }
 
   function restart() {
@@ -102,12 +115,10 @@ function updateColors(color, rowId, pixelId) {
     setCanvasState(newCanvas);
   }
 
-
   return (
-    <div
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-    >
+    <div onMouseDown={handleMouseDown}
+     onMouseUp={handleMouseUp}>
+      <div>You can draw if you want</div>
       <div className="main-container">
         <div className="options-container">
           <div className="color-picker-container">
@@ -131,17 +142,20 @@ function updateColors(color, rowId, pixelId) {
         <div className="canvas-rows">
           {canvasState.map((row, rowIdx) => (
             <Row
-            key={rowIdx}
-            rowPixels={row} 
-            rowIdx={rowIdx}
-            isMouseDown={isMouseDown}
-            color={selectedColor}
-            background={background}
-            hoveredPixel={hoveredPixel}
-            setHoveredPixel={setHoveredPixel}
-            updateColors={updateColors}
-            canvasState={canvasState}
-            handleMouseDown={handleMouseDown}
+              key={rowIdx}
+              rowPixels={row}
+              rowIdx={rowIdx}
+              isMouseDown={isMouseDown}
+              color={selectedColor}
+              background={background}
+              hoveredPixel={hoveredPixel}
+              setHoveredPixel={setHoveredPixel}
+              updateColors={updateColors}
+              canvasState={canvasState}
+              handleMouseDown={handleMouseDown}
+              setStrokeLength={setStrokeLength}
+              strokeLength={strokeLength}
+              handleAddToHistory={handleAddToHistory}
             />
           ))}
         </div>
