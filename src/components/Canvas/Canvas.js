@@ -7,17 +7,15 @@ import BackgroundColorButton from "../BackgroundColorButton/BackgroundColor";
 import ExportButton from "../ExportButton/ExportButton";
 import Panel from "../Panel/Panel";
 import UndoButton from "../UndoButton/UndoButton";
-import Pixel from "../Pixel/Pixel";
 import Row from "../Row/Row";
-import { use } from "react";
-let id = 0;
+
 
 const NOT_YET_SET_COLOR = "not-yet-set";
 
 function createFreshCanvasState() {
-  return Array(15)
+  return Array(18)
     .fill()
-    .map(() => Array(15).fill(NOT_YET_SET_COLOR));
+    .map(() => Array(18).fill(NOT_YET_SET_COLOR));
 }
 
 export default function Canvas() {
@@ -27,6 +25,7 @@ export default function Canvas() {
   const [canvasState, setCanvasState] = useState(createFreshCanvasState());
   const [hoveredPixel, setHoveredPixel] = useState(null);
   const [history, setHistory] = useState([createFreshCanvasState()]);
+  const [deleted, setDeleted] = useState([]);
   const [strokeLength, setStrokeLength] = useState(0);
   const [lastStreak, setLastStreak] = useState(0);
   const [streaksArray, setStreaksArray] = useState([]);
@@ -116,7 +115,7 @@ export default function Canvas() {
   return (
     <div onMouseDown={handleMouseDown}
      onMouseUp={handleMouseUp}>
-      <div>You can draw if you want</div>
+    <div>You can draw on this :-)</div>
       <div className="main-container">
         <div className="options-container">
           <div className="color-picker-container">
