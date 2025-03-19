@@ -2,7 +2,7 @@ import "./Row.css";
 import Pixel from "../Pixel/Pixel";
 import { useEffect } from "react";
 
-export default function Row({ rowPixels, rowIdx, isMouseDown, background, hoveredPixel, setHoveredPixel, updateColors, canvasState, color, setStrokeLength, strokeLength, handleAddToHistory }) {
+export default function Row({ rowPixels, rowIdx, isMouseDown, background, hoveredPixel, setHoveredPixel, updateColors, canvasState, color, setStrokeLength, strokeLength, handleAddToHistory, countStreak, lastStreak, setLastStreak, setStreaksArray }) {
 
   
   return (
@@ -14,16 +14,18 @@ export default function Row({ rowPixels, rowIdx, isMouseDown, background, hovere
           rowId={rowIdx} 
           pixelId={pixelIdx} 
           isMouseDown={isMouseDown}
-          //selectedColor={selectedColor}
           background={background}
           hoveredPixel={hoveredPixel}
           setHoveredPixel={setHoveredPixel}
           updateColors={updateColors}
           canvasState={canvasState}
-          // handleMouseDown={handleMouseDown}
           setStrokeLength={setStrokeLength}
           strokeLength={strokeLength}
           handleAddToHistory={handleAddToHistory}
+          countStreak={countStreak}
+          lastStreak={lastStreak}
+          setLastStreak={setLastStreak}
+          setStreaksArray={setStreaksArray}
         />
       ))}
     </div>

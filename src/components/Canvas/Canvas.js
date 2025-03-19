@@ -15,32 +15,27 @@ let id = 0;
 const NOT_YET_SET_COLOR = "not-yet-set";
 
 function createFreshCanvasState() {
-  return Array(25)
+  return Array(15)
     .fill()
-    .map(() => Array(25).fill(NOT_YET_SET_COLOR));
+    .map(() => Array(15).fill(NOT_YET_SET_COLOR));
 }
 
 export default function Canvas() {
-  const [reset, setReset] = useState(false);
   const [selectedColor, setSelectedColor] = useState("pink");
   const [background, setBackground] = useState(NOT_YET_SET_COLOR);
   const [isMouseDown, setIsMouseDown] = useState(false);
-  const [undo, setUndo] = useState(false);
   const [canvasState, setCanvasState] = useState(createFreshCanvasState());
   const [hoveredPixel, setHoveredPixel] = useState(null);
   const [history, setHistory] = useState([createFreshCanvasState()]);
-  const [deleted, setDeleted] = useState([]);
   const [strokeLength, setStrokeLength] = useState(0);
+  const [lastStreak, setLastStreak] = useState(0);
+  const [streaksArray, setStreaksArray] = useState([]);
 
   useEffect(() => {
     setBackground("white");
     console.log("history at beginning " + history);
   }, []);
 
-  // useEffect(() => {
-  //   handleHistoryUpdate();
-  //  // console.log("history update colors " + history);
-  // }, [canvasState]);
 
   function updateColors(color, rowId, pixelId) {
     setCanvasState((prevState) => {
@@ -48,7 +43,6 @@ export default function Canvas() {
       newState[rowId][pixelId] = color;
       return [...newState];
     });
-      console.log(canvasState);
   }
   
   function handleAddToHistory() {
@@ -62,14 +56,27 @@ export default function Canvas() {
       return;
     }
     setDeleted((prevDeleted) => [...prevDeleted, history[0]]);
-    console.log("history before slice", history);
     setHistory((prevHistory) => {
-      const newHistory = prevHistory.slice(1);
+      const lastStreak = streaksArray[0];
+      const newHistory = prevHistory.slice(lastStreak - 1);
+      console.log("history: " + newHistory);
       setCanvasState(newHistory[0]);
-      console.log("history after slice", newHistory);
       return newHistory;
     });
+    setStreaksArray((prevStreaksArray) => prevStreaksArray.slice(1));
   }
+
+  function getLastStreak() {
+    const lastStreak = streaksArray[0];
+    console.log("streaks array: " + streaksArray);
+    console.log("last streak: " + lastStreak);
+    return lastStreak;
+  }
+
+  function countStreak() {
+    setStrokeLength(strokeLength);
+  }
+
 
   function restart() {
     const updatedCanvas = createFreshCanvasState();
@@ -80,11 +87,6 @@ export default function Canvas() {
 
   function handleCanvasUpdate(newCanvas) {
     setCanvasState(newCanvas);
-  }
-
-
-  function handleUndoComplete() {
-    setUndo(false);
   }
 
   function handleMouseDown() {
@@ -105,10 +107,6 @@ export default function Canvas() {
 
   function restart() {
     setCanvasState(createFreshCanvasState());
-  }
-
-  function resetComplete() {
-    setReset(false);
   }
 
   function handleCanvasUpdate(newCanvas) {
@@ -156,6 +154,10 @@ export default function Canvas() {
               setStrokeLength={setStrokeLength}
               strokeLength={strokeLength}
               handleAddToHistory={handleAddToHistory}
+              countStreak={countStreak}
+              lastStreak={lastStreak}
+              setLastStreak={setLastStreak}
+              setStreaksArray={setStreaksArray}
             />
           ))}
         </div>

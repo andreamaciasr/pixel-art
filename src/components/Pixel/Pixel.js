@@ -15,17 +15,18 @@ export default function Pixel({
   setStrokeLength,
   strokeLength,
   handleAddToHistory,
+  setLastStreak,
+  setStreaksArray,
 }) {
-
-
-
   function handleClick() {
     updateColors(color, rowId, pixelId);
     handleAddToHistory();
+    setStrokeLength(strokeLength + 1);
   }
 
   function handleMouseHover() {
     if (isMouseDown) {
+      setStrokeLength(strokeLength + 1);
       updateColors(color, rowId, pixelId);
       handleAddToHistory();
     } else {
@@ -33,23 +34,27 @@ export default function Pixel({
     }
   }
 
-  function handleMouseLeave() {
+  function handleMouseUp() {
     setHoveredPixel(null);
+    // after a streak is done, add the streak length to the streaks array
+    if (strokeLength !== 0) {
+      setLastStreak((prevLastStreak) => {
+        return strokeLength;
+      });
+      updateStreaksArray();
+      setStrokeLength(0);
+    }
   }
+
+  function updateStreaksArray() {
+    setStreaksArray((prevStreaksArray) => [strokeLength, ...prevStreaksArray]);
+  }
+
 
   function handleMouseDown() {
-  // setStrokeLength(strokeLength + 1);
+    setStrokeLength(strokeLength + 1);
+    console.log("streak length: " + strokeLength);
     updateColors(color, rowId, pixelId);
-    
-  }
-
-  function handleStrokeLength() {
-    let length = 0;
-    while(isMouseDown) {
-      length++;
-    }
-    setStrokeLength(length);
-    console.log(length);
   }
 
   const thisPixelIsTheOneThatsHovered =
@@ -59,14 +64,15 @@ export default function Pixel({
     canvasState[rowId][pixelId] === "not-yet-set"
       ? background
       : canvasState[rowId][pixelId];
-  
+
   return (
     <div
       className="pixel"
       onClick={handleClick}
       onMouseEnter={handleMouseHover}
       onMouseDown={handleMouseDown}
-      onMouseLeave={handleMouseLeave}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={() => setHoveredPixel(null)}
       style={{
         backgroundColor: thisPixelIsTheOneThatsHovered ? color : pixelColor,
       }}
