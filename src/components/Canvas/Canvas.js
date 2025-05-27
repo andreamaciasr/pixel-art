@@ -65,13 +65,6 @@ export default function Canvas() {
     setStreaksArray((prevStreaksArray) => prevStreaksArray.slice(1));
   }
 
-  function getLastStreak() {
-    const lastStreak = streaksArray[0];
-    console.log("streaks array: " + streaksArray);
-    console.log("last streak: " + lastStreak);
-    return lastStreak;
-  }
-
   function countStreak() {
     setStrokeLength(strokeLength);
   }
